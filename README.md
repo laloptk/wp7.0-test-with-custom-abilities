@@ -130,6 +130,50 @@ The AI is instructed to return an array using these shapes:
 
 The WordPress AI Client makes a **non-streaming** request: the provider generates the full response before sending the first byte. A long post can take 40–60 seconds, which exceeds the default 30-second cURL timeout — arriving as a malformed or empty response.
 
+### Where cURL comes from
+
+This plugin contains no cURL code. The full call stack when `generate_text()` is called is:
+
+```
+This plugin
+  └─ WordPress AI plugin  (AI_Service)
+       └─ php-ai-client library  (bundled in wp-includes)
+            └─ Anthropic provider plugin  (AnthropicTextGenerationModel)
+                 └─ HTTP request to api.anthropic.com
+                      └─ cURL  ← PHP extension at the server level
+```
+
+cURL is PHP's standard transport for outbound HTTPS. The 30-second limit is the default timeout configured inside `php-ai-client`. Neither this plugin nor the WordPress AI plugin sets it explicitly.
+
+### Increasing the timeout
+
+How you change it depends on your server stack. The timeout lives at the PHP/server level, not in WordPress code, so there is no WordPress filter that reliably reaches it (the `http_request_timeout` filter only applies to WordPress's own `wp_remote_*` functions, which `php-ai-client` does not use).
+
+**Apache** — add to your `.htaccess` or `VirtualHost` block:
+```apache
+php_value default_socket_timeout 120
+```
+
+**Apache + PHP-FPM / Nginx** — edit `php.ini` or a `php.ini` override file (e.g. `/etc/php/8.x/fpm/conf.d/99-custom.ini`):
+```ini
+default_socket_timeout = 120
+```
+
+Also increase PHP-FPM's own request limit if it is lower:
+```ini
+; php-fpm pool config (www.conf or similar)
+request_terminate_timeout = 120
+```
+
+**Local by Flywheel** — go to the site's **PHP** tab, open the `php.ini` editor, and add:
+```ini
+default_socket_timeout = 120
+```
+
+After any `php.ini` change, restart PHP-FPM (or restart the site in Local) for it to take effect.
+
+> Note: `default_socket_timeout` affects stream-based connections. Whether it caps cURL depends on the PHP build and the `php-ai-client` version. If timeouts persist after raising it, the library may be setting `CURLOPT_TIMEOUT` internally, in which case the only reliable fix without patching the library is to keep `max_words` low enough that generation finishes within the existing limit.
+
 ### How this plugin handles it
 
 `max_tokens` is calculated dynamically from the user-supplied word count:
