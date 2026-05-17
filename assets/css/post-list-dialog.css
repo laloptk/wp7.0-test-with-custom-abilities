@@ -1,0 +1,146 @@
+/* ── Trigger button ───────────────────────────────────────────────────────── */
+
+.wpa-trigger {
+	margin-left: 6px !important;
+}
+
+/* ── Dialog shell ─────────────────────────────────────────────────────────── */
+
+#wpa-dialog {
+	padding: 0;
+	border: 1px solid #dcdcde;
+	border-radius: 3px;
+	box-shadow: 0 3px 30px rgba(0, 0, 0, .2);
+	width: 480px;
+	max-width: calc(100vw - 32px);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+		Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-size: 13px;
+	color: #1d2327;
+}
+
+#wpa-dialog::backdrop {
+	background: rgba(0, 0, 0, .5);
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+
+.wpa-dialog__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 16px;
+	border-bottom: 1px solid #dcdcde;
+	background: #f6f7f7;
+}
+
+.wpa-dialog__header h2 {
+	margin: 0;
+	font-size: 14px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.wpa-dialog__close {
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 2px 6px;
+	color: #787c82;
+	font-size: 20px;
+	line-height: 1;
+	border-radius: 2px;
+}
+
+.wpa-dialog__close:hover {
+	color: #1d2327;
+	background: #dcdcde;
+}
+
+/* ── Body ─────────────────────────────────────────────────────────────────── */
+
+.wpa-dialog__body {
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.wpa-dialog__label {
+	display: block;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+.wpa-dialog__body .large-text {
+	width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+}
+
+/* ── Length control ───────────────────────────────────────────────────────── */
+
+.wpa-dialog__length-row {
+	margin-top: 4px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.wpa-dialog__slider-wrap {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.wpa-dialog__slider-wrap input[type="range"] {
+	flex: 1;
+	accent-color: #2271b1;
+}
+
+.wpa-dialog__words-value {
+	font-size: 12px;
+	color: #50575e;
+	white-space: nowrap;
+	min-width: 60px;
+}
+
+.wpa-dialog__words-value--warn {
+	color: #996800;
+	font-weight: 600;
+}
+
+.wpa-dialog__length-warning {
+	margin: 0;
+	padding: 6px 10px;
+	background: #fcf9e8;
+	border-left: 3px solid #dba617;
+	color: #996800;
+	font-size: 12px;
+	border-radius: 0 2px 2px 0;
+}
+
+/* ── Notice ───────────────────────────────────────────────────────────────── */
+
+.wpa-dialog__notice {
+	padding: 8px 12px;
+	border-radius: 2px;
+	margin-top: 4px;
+}
+
+.wpa-dialog__notice--error {
+	background: #fcf0f1;
+	border-left: 4px solid #d63638;
+	color: #8b1a1c;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+
+.wpa-dialog__footer {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	padding: 12px 16px;
+	border-top: 1px solid #dcdcde;
+	background: #f6f7f7;
+}
